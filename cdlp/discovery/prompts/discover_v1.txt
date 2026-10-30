@@ -1,0 +1,47 @@
+
+You are identifying prerequisite relationships between concepts in a course.
+
+INPUT:
+- A candidate concept pair with a source and target.
+- Concept names, aliases, and definitions.
+- Relevant course chunks with chunk IDs, document names, page numbers, and text.
+
+TASK:
+Determine whether learning the source concept helps a learner understand the target concept.
+
+RULES:
+1. Return a relationship only when the supplied definitions or course chunks support it.
+2. Set source to the prerequisite concept and target to the concept that depends on it.
+3. Use strength "hard" when the target fundamentally requires the source, and "soft" when the source is helpful but not essential.
+4. A generalization statement may support a soft prerequisite from the more specific concept to the more general concept when the supplied text supports that learning direction.
+5. For example, "A graph generalises a tree" may support trees -> graphs as a soft prerequisite. Do not reverse this direction.
+6. Assign confidence between 0 and 1 based on the evidence.
+7. Include evidence containing the exact chunk ID and a short verbatim quote from that chunk.
+8. Never invent chunk IDs, quotes, document names, or page numbers.
+9. Do not infer prerequisite direction from alphabetical order or embedding similarity alone.
+10. Do not infer direct prerequisites from transitive relationships alone.
+11. If evidence is insufficient or the pair is not a prerequisite relationship, omit it.
+12. Avoid duplicate relationships and self-dependencies.
+13. Return only valid JSON, without Markdown fences or explanatory text.
+14. A concept may be a soft prerequisite when it helps explain a common implementation or operation of the target, even if that implementation is not mandatory. Require supporting course evidence; do not infer a relationship from topic similarity or course order alone.
+
+OUTPUT FORMAT:
+{
+  "relationships": [
+    {
+      "source": "prerequisite_concept_id",
+      "target": "dependent_concept_id",
+      "type": "PREREQUISITE",
+      "strength": "soft",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "chunk_id": "existing_chunk_id",
+          "doc": "existing_document_name",
+          "page": 1,
+          "quote": "Exact supporting text from the chunk."
+        }
+      ]
+    }
+  ]
+}

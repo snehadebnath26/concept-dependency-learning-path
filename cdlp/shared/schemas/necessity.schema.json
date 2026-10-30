@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Necessity and Leakage Evaluation",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "experiment",
+    "scoring",
+    "relationships_evaluated",
+    "overall_leakage_rate",
+    "results"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "experiment": {
+      "type": "string"
+    },
+    "scoring": {
+      "type": "object",
+      "required": [
+        "necessity_gap",
+        "leakage_rate"
+      ],
+      "properties": {
+        "necessity_gap": {
+          "type": "string"
+        },
+        "leakage_rate": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "relationships_evaluated": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "overall_leakage_rate": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "relationship_id",
+          "source",
+          "target",
+          "status",
+          "necessity_gap",
+          "leakage_rate",
+          "questions_evaluated"
+        ],
+        "properties": {
+          "relationship_id": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["MEASURED", "NO_TARGET_QUESTIONS"]
+          },
+          "questions_evaluated": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "necessity_gap": {
+            "type": ["number", "null"]
+          },
+          "leakage_rate": {
+            "type": ["number", "null"],
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}
